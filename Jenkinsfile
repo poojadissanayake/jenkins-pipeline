@@ -12,6 +12,22 @@ pipeline {
                 echo "Run unit tests to ensure the code functions as expected and run integration tests to ensure the different components of the application work together as expected."
                 echo "Tool: JUnit"
             }
+            post {
+                success {
+                    echo 'Testing Success.'
+                    mail to: 'poojadissanayake6@gmail.com',
+                        subject: "Testing Success",
+                        body: "Testing stage completed successfully.\n\n" +
+                            "Check the build logs at ${env.BUILD_URL}"
+                }
+                failure {
+                    echo 'Testing failed.'
+                    mail to: 'poojadissanayake6@gmail.com',
+                        subject: "Testing failed",
+                        body: "Testing failed.\n\n" +
+                            "Check the build logs at ${env.BUILD_URL}"
+                }
+            }
         }
         stage('Code Analysis') {
             steps {
