@@ -40,6 +40,22 @@ pipeline {
                 echo "Perform a security scan on the code using a tool to identify any vulnerabilities."
                 echo "Tool: Burp Suit"
             }
+            post {
+                success {
+                    echo 'Security Scan Success.'
+                    mail to: 'poojadissanayake6@gmail.com',
+                        subject: "Security Scan Success",
+                        body: "Security Scan stage completed successfully.\n\n" +
+                            "Check the build logs at ${env.BUILD_URL}"
+                }
+                failure {
+                    echo 'Security Scan failed.'
+                    mail to: 'poojadissanayake6@gmail.com',
+                        subject: "Security Scan failed",
+                        body: "Security Scan failed.\n\n" +
+                            "Check the build logs at ${env.BUILD_URL}"
+                }
+            }
         }
         stage('Deploy to Staging'){
             steps{
